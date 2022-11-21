@@ -12,8 +12,7 @@ let tfIDF = new TFIDF();
 loadSamples();
 
 function loadSamples() {
-    let filenames = ['fish.txt','rainbow.txt', 'cat.txt', 'phadke.txt',
-    'eclipse.txt', 'sports.txt', 'test.txt', 'tree.txt'];
+    let filenames = ['dummies_coin.txt'];
   
     for (let i = 0; i < filenames.length; i++) {
         getTermFreq(filenames[i]);
