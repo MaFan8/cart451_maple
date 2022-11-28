@@ -1,8 +1,5 @@
-
-
 window.onload = function () {
  
-
       $.get(
         "/data", // Specific route
         function (response) {
@@ -14,40 +11,12 @@ window.onload = function () {
             for (let key of Object.keys(response)) {
               console.log(key); 
              
-              // $('#parent'). append('<div> hello</div>');
+             
             }
             // for (let value of Object.values(response)) {
             //   console.log(value); 
 
             // }
-            
-
-            // let window = document.querySelector('.window');
-            // let width = 9*(window.offsetWidth/10);
-            // let height = 9*(window.offsetHeight/10);
-
-          // $(window).empty();
-
-            //console.log(width, height);
-            // let responseOb = response[i];
-            for (let i=0; i<response.length ;i++){
-              //  console.log(response)
-               
-                // let id = [i]
-                //  console.log(response[i].score);
-            //      let textSize = (response[i].score)*60000
-
-                //  let wordXpos = Math.floor(Math.random() * width)
-                //  let wordYpos = Math.floor(Math.random() * height)
-
-            //     console.log(wordXpos, wordYpos)
-
-                // $(".window" ).prepend( `<div class = "word" id = "${id}"> ${response[i].key}</div>`)
-                 
-                // $(`#${id}`).css("font-size",`${textSize}px`);
-                // $(`#${id}`).css("top",`${wordYpos}px`);
-                // $(`#${id}`).css("left",`${wordXpos}px`);
-             }
         }
       ); //END get
     }; //END click
