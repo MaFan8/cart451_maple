@@ -1,15 +1,713 @@
+/* 
+----------------------------------------------------------------------------------------------------------------
+    CART 451: EXERCISE II
+    Using VBG(Verb Gerund Present Participles) with Natural (NPL Progam) to determine their sentiment value and 
+    display the results from data (Book: Raising Happy Children for Dummies). 
+
+    References:
+    Book:  Raising Happy Children for Dummies
+    https://archive.org/details/for-dummies-collection-pdf-ebooks-all-you-need/Raising%20Happy%20Children%20For%20Dummies/
+    Line Visual: https://editor.p5js.org/KevinWorkman/sketches/O4Hm1Apln
+----------------------------------------------------------------------------------------------------------------
+*/
+const { text } = require("express");
+
+ 
+
+
+// VBG word results
+let vbgWords = {
+  "pinpointing": 0,
+  "wedding": 0.375,
+  "diving": 0,
+  "Clarifying": 0.375,
+  "resorting": 0,
+  "revealing": 0.438,
+  "influencing": 0.333,
+  "chewing": 0,
+  "surviving": 0,
+  "serving": 0,
+  "aiding": 0.375,
+  "varying": 0,
+  "acquiring": -0.25,
+  "Climbing": 0.25,
+  "sprinkling": 0,
+  "trapping": -0.25,
+  "tuning": 0.25,
+  "bowing": 0.625,
+  "granting": 0,
+  "toughening": 0.438,
+  "repairing": 0.325,
+  "pending": 0.375,
+  "squirming": 0,
+  "monitoring": 0.25,
+  "instructing": 0.25,
+  "linking": 0.375,
+  "securing": 0,
+  "performing": 0,
+  "Noting": 0.875,
+  "hassling": -0.562,
+  "wing": 0.375,
+  "imagining": 0.25,
+  "scolding": -0.375,
+  "gossiping": 0,
+  "figuring": 0.25,
+  "accomplishing": 0.333,
+  "blocking": 0,
+  "Examining": 0,
+  "correcting": -0.25,
+  "mining": 0.25,
+  "bring": 0.25,
+  "reminiscing": 0.25,
+  "workin": 0,
+  "raging": -0.458,
+  "underpinning": 0,
+  "claiming": 0,
+  "operating": 0.313,
+  "slipping": 0.375,
+  "rocking": 0,
+  "overhauling": 0,
+  "facilitating": -0.25,
+  "mimicking": 0,
+  "admonishing": -0.25,
+  "Modifying": 0.375,
+  "Adjusting": 0.25,
+  "paraphrasing": 0,
+  "complaining": -0.25,
+  "repeating": 0.25,
+  "Discounting": 0.25,
+  "comforting": 0.375,
+  "dismissing": -0.375,
+  "Accusing": -0.25,
+  "adding": 0.25,
+  "sting": -0.35,
+  "takin": 0,
+  "grabbing": 0,
+  "launching": 0,
+  "shelving": 0,
+  "protecting": 0.25,
+  "describing": 0.625,
+  "refusing": 0,
+  "havin": 0,
+  "stifling": -0.375,
+  "conditioning": 0.25,
+  "formulating": 0.25,
+  "enhancing": 0.375,
+  "bothering": -0.25,
+  "denying": 0,
+  "wrongdoing": 0,
+  "sweeping": 0.313,
+  "Winning": 0.375,
+  "backing": 0.333,
+  "bobbing": 0,
+  "budgeting": 0,
+  "emerging": 0.313,
+  "judging": 0,
+  "rating": 0,
+  "bowling": 0,
+  "introducing": 0,
+  "sending": 0,
+  "Comparing": -0.25,
+  "dominating": -0.25,
+  "Eliminating": 0.25,
+  "praising": 0.75,
+  "Rewarding": 0.417,
+  "manipulating": 0.25,
+  "overdoing": 0,
+  "mocking": -0.25,
+  "motivating": 0.25,
+  "Displaying": 0,
+  "progressing": 0.25,
+  "shaping": 0.25,
+  "wandering": -0.25,
+  "tucking": 0.25,
+  "dragging": 0,
+  "plying": 0,
+  "splashing": 0,
+  "indulging": 0.667,
+  "showering": 0,
+  "diminishing": 0.375,
+  "enduring": -0.375,
+  "believing": 0.25,
+  "Insisting": 0.25,
+  "provoking": -0.25,
+  "Shepherding": 0,
+  "Valuing": 0.75,
+  "defending": 0.25,
+  "hanging": 0,
+  "Determining": 0.25,
+  "destroying": -0.437,
+  "camping": -0.375,
+  "ignoring": -0.667,
+  "stating": 0.5,
+  "Tailoring": 0,
+  "forgiving": 0.25,
+  "sewing": 0.25,
+  "rushing": 0.375,
+  "cooling": -0.344,
+  "sifting": 0,
+  "reasoning": 0.25,
+  "napping": -0.25,
+  "Wanting": 0.25,
+  "Remaining": 0,
+  "placing": 0.25,
+  "slowing": -0.458,
+  "crossing": -0.437,
+  "fussing": 0,
+  "resulting": 0,
+  "Navigating": 0.25,
+  "continuing": -0.25,
+  "racing": 0,
+  "ordering": 0.333,
+  "indicating": 0,
+  "furthering": 0.25,
+  "owning": 0,
+  "tidying": -0.25,
+  "Lecturing": -0.312,
+  "Rescuing": 1,
+  "Withdrawing": 0,
+  "restraining": 0,
+  "Sulking": -0.625,
+  "harassing": -0.375,
+  "misbehaving": 0.25,
+  "excluding": 0,
+  "concentrating": 0.25,
+  "laying": 0,
+  "joining": 0.375,
+  "breaking": -0.25,
+  "carrying": 0,
+  "attempting": -0.25,
+  "explaining": 0.625,
+  "flitting": 0,
+  "engaging": 0.75,
+  "Distracting": 0,
+  "lacking": -0.25,
+  "demonstrating": 0.25,
+  "investing": 0,
+  "Considering": 0.5,
+  "blowing": 0,
+  "behaving": 0,
+  "brushing": 0,
+  "Choosing": 0,
+  "deepening": 0,
+  "rising": 0.313,
+  "losing": -0.625,
+  "listing": 0.25,
+  "Adopting": 0.25,
+  "liberating": 0.25,
+  "drawing": 0,
+  "thinkin": 0,
+  "nurturing": 0.25,
+  "Hoping": 0.5,
+  "king": 0,
+  "meaning": 0.25,
+  "rolling": 0,
+  "contacting": 0,
+  "Structuring": 0.25,
+  "highlighting": 0,
+  "recording": 0,
+  "reciting": 0,
+  "mapping": 0,
+  "testing": 0.563,
+  "completing": 0.313,
+  "signing": 0,
+  "lighting": -0.25,
+  "stepping": 0,
+  "revising": 0.25,
+  "Forging": -0.25,
+  "improving": 0.25,
+  "lasting": -0.375,
+  "overreacting": 0,
+  "reaching": 0,
+  "bolstering": 0,
+  "allowing": 0.458,
+  "swearing": -0.25,
+  "Combating": -0.25,
+  "bursting": 0,
+  "enlightening": 0.313,
+  "Shifting": 0,
+  "walking": 0,
+  "failing": -0.261,
+  "achieving": -0.25,
+  "pointing": 0,
+  "relieving": 0,
+  "Preventing": 0.25,
+  "relaxing": 0.25,
+  "jerking": -0.375,
+  "stiffening": 0,
+  "dreaming": -0.375,
+  "punishing": -0.25,
+  "suffering": -0.25,
+  "discussing": 0,
+  "inking": 0,
+  "wetting": 0,
+  "Limiting": 0.438,
+  "lifting": 0,
+  "waking": 0.25,
+  "inviting": 0.25,
+  "involving": 0,
+  "biting": -0.25,
+  "sucking": 0,
+  "Defeating": -0.625,
+  "shoving": 0,
+  "spreading": 0.25,
+  "posting": 0,
+  "Altering": 0.25,
+  "practising": 0.75,
+  "threatening": -0.25,
+  "surrounding": 0.25,
+  "bouncing": 0.25,
+  "desiring": 0.313,
+  "lying": -0.25,
+  "ringing": 0,
+  "Ganging": 0,
+  "barking": 0,
+  "passing": 0,
+  "Defining": 0.5,
+  "lightning": 0,
+  "leaving": 0,
+  "attracting": 0.25,
+  "sweating": 0,
+  "shaking": 0,
+  "avoiding": 0.25,
+  "interfering": 0,
+  "ceding": 0,
+  "Confronting": -0.25,
+  "acting": -0.25,
+  "touching": 0.25,
+  "functioning": 0.25,
+  "occurring": 0,
+  "timing": 0.375,
+  "lining": 0,
+  "hiding": 0,
+  "providing": 0.5,
+  "Supporting": -0.25,
+  "Presenting": 0.25,
+  "pleading": 0.25,
+  "overcoming": 0,
+  "bottling": 0,
+  "dying": 0,
+  "recovering": 0,
+  "misunderstanding": -0.25,
+  "Bargaining": 0.25,
+  "Identifying": 0.25,
+  "ensuring": 0.25,
+  "speeding": 0,
+  "pouring": 0.25,
+  "dating": 0,
+  "interrupting": -0.25,
+  "Resisting": 0,
+  "Easing": -0.375,
+  "splitting": 0,
+  "bearing": 0.25,
+  "blaming": -0.562,
+  "winding": 0.25,
+  "falling": 0,
+  "fulfilling": 0.375,
+  "struggling": -0.75,
+  "fixing": 0,
+  "wishing": 0.25,
+  "wasting": -0.437,
+  "bending": -0.25,
+  "Blending": 0,
+  "redecorating": 0,
+  "belonging": 0.5,
+  "overarching": 0,
+  "Welcoming": 0.5,
+  "spinning": 0,
+  "answering": -0.25,
+  "coaching": 0,
+  "beating": -0.25,
+  "stopping": 0,
+  "hunting": -0.25,
+  "accommodating": 0.25,
+  "renting": 0,
+  "Tempering": -0.25,
+  "slaying": -1,
+  "selling": 0.25,
+  "living": 0.479,
+  "vying": 0,
+  "whining": -0.75,
+  "Acknowledging": 0.375,
+  "sticking": 0,
+  "punching": 0,
+  "negotiating": 0.25,
+  "smoking": 0,
+  "drinking": 0,
+  "Facing": 0.5,
+  "tormenting": -0.437,
+  "turning": 0,
+  "causing": 0.25,
+  "fighting": 0.25,
+  "intervening": 0,
+  "participating": 0.25,
+  "warning": -0.25,
+  "squabbling": 0,
+  "hurting": -0.625,
+  "pinching": 0,
+  "competing": 0.25,
+  "Mourning": -0.687,
+  "Beginning": 0,
+  "healing": 0.375,
+  "juggling": 0,
+  "Appreciating": 0.25,
+  "grieving": -0.5,
+  "wearing": 0,
+  "treating": 0.25,
+  "Reacting": 0,
+  "bewildering": -0.312,
+  "Responding": 0.375,
+  "arching": 0.25,
+  "compiling": 0,
+  "enriching": 0.313,
+  "depending": 0.375,
+  "absorbing": 0.25,
+  "questioning": 0,
+  "letting": 0,
+  "regarding": 0.625,
+  "assessing": 0.5,
+  "coming": 0.875,
+  "underlying": 0,
+  "imaging": 0.25,
+  "catching": 0.5,
+  "kicking": 0,
+  "throwing": 0,
+  "skipping": 0,
+  "tying": 0,
+  "planning": 0.25,
+  "processing": 0,
+  "flowing": 0.375,
+  "producing": 0,
+  "reducing": 0.375,
+  "resting": 0.375,
+  "rhyming": 0.25,
+  "spelling": 0,
+  "ending": 0.25,
+  "Controlling": 0.25,
+  "paying": 0.5,
+  "Sustaining": 0.25,
+  "finishing": 0,
+  "Fidgeting": 0,
+  "upsetting": -0.5,
+  "tiring": 0,
+  "increasing": 0.25,
+  "Taming": 0.25,
+  "arguing": -0.25,
+  "smacking": -0.25,
+  "experiencing": 0.75,
+  "relating": 0.313,
+  "crawling": 0,
+  "swinging": 0.25,
+  "tapping": -0.25,
+  "clapping": 0.5,
+  "twisting": 0.25,
+  "adapting": 0.25,
+  "copying": 0,
+  "preceding": 0.375,
+  "fiddling": 0,
+  "spilling": 0,
+  "handwriting": 0,
+  "accompanying": 0,
+  "forming": 0.625,
+  "maintaining": 0.375,
+  "spotting": 0,
+  "studying": 0.25,
+  "according": 0.25,
+  "affecting": 0.25,
+  "bullying": -0.25,
+  "showing": 0,
+  "solving": 0.375,
+  "missing": -0.25,
+  "switching": 0,
+  "sporting": 0,
+  "draining": 0.25,
+  "Tackling": 0,
+  "Seeking": -0.25,
+  "accepting": 0.313,
+  "flying": 0.25,
+  "conceiving": 0.25,
+  "clearing": 0.438,
+  "looking": 0.375,
+  "parking": 0,
+  "unlocking": -0.25,
+  "pulling": 0,
+  "sling": 0,
+  "dealing": 0,
+  "handling": 0,
+  "smelling": -0.25,
+  "stimulating": 0.25,
+  "aching": -0.25,
+  "settling": -0.5,
+  "evening": 0,
+  "reassuring": 0.375,
+  "existing": 0.333,
+  "bonding": 0,
+  "sapping": 0,
+  "sleeping": 0,
+  "spitting": 0,
+  "feeding": 0,
+  "happening": 0,
+  "speaking": 0.5,
+  "addressing": 0.375,
+  "dressing": 0.313,
+  "matching": -0.25,
+  "worrying": -0.75,
+  "unloading": 0,
+  "cultivating": 0.275,
+  "skating": 0,
+  "gardening": 0,
+  "collecting": -0.25,
+  "Pursuing": 0,
+  "calling": 0,
+  "Meting": 0,
+  "swimming": 0,
+  "imposing": -0.25,
+  "enforcing": -0.25,
+  "ranging": 0.25,
+  "covering": 0,
+  "travelling": 0.25,
+  "offering": 0,
+  "Sibling": 0,
+  "bickering": 0,
+  "lightening": 0.396,
+  "regaining": -0.25,
+  "carving": 0.25,
+  "crying": -0.375,
+  "cleaning": 0.25,
+  "ironing": 0.25,
+  "hitting": 0,
+  "expressing": 0.25,
+  "ring": 0,
+  "anything": 0,
+  "Filling": 0.25,
+  "breathing": -0.25,
+  "wrapping": 0.375,
+  "receiving": 0.438,
+  "visiting": 0,
+  "soothing": 0.313,
+  "Developing": -0.375,
+  "Respecting": 0.375,
+  "hugging": 0,
+  "spoiling": -0.437,
+  "challenging": -0.25,
+  "Nothing": 0,
+  "growing": 0.25,
+  "Imitating": 0.333,
+  "viewing": 0,
+  "riding": 0,
+  "attending": 0.25,
+  "shopping": 0,
+  "shutting": 0,
+  "knocking": 0.375,
+  "balancing": 0.375,
+  "keeping": 0,
+  "disciplining": 0.438,
+  "becoming": 0.25,
+  "giving": 0.5,
+  "preparing": 0.542,
+  "moving": -0.25,
+  "Striving": 0,
+  "pushing": 0,
+  "gaining": 0.281,
+  "buying": 0.25,
+  "emptying": 0,
+  "helping": 0.25,
+  "building": 0,
+  "reading": 0,
+  "peeling": -0.375,
+  "caring": 0.4,
+  "taunting": -0.375,
+  "interacting": 0.375,
+  "Encouraging": 0.438,
+  "Creating": 0,
+  "Saying": 0,
+  "wrestling": -0.25,
+  "tumbling": 0,
+  "romping": 0.25,
+  "exploring": 0,
+  "discovering": 0.375,
+  "roaring": 0.25,
+  "chasing": 0,
+  "staying": 0,
+  "setting": 0,
+  "Deciding": 0.375,
+  "resolving": 0.375,
+  "searching": 0.292,
+  "committing": 0.25,
+  "packing": 0,
+  "bringing": 0.25,
+  "training": 0.25,
+  "forcing": -0.281,
+  "trying": 0.25,
+  "screaming": 0.292,
+  "hearing": 0.5,
+  "yelling": -0.375,
+  "approaching": 0.583,
+  "fostering": 0.438,
+  "establishing": 0.275,
+  "waiting": 0.5,
+  "entering": 0,
+  "bein": 0,
+  "ping": 0.375,
+  "teaching": 0.25,
+  "checking": 0,
+  "arranging": 0,
+  "meeting": 0.625,
+  "spending": 0,
+  "seeing": 0,
+  "arousing": 0.417,
+  "sharing": 0.375,
+  "telling": 0.375,
+  "laughing": 0.417,
+  "playing": 0,
+  "chilling": -0.625,
+  "listening": -0.25,
+  "going": 0.5,
+  "Asking": 0,
+  "Focusing": 0.375,
+  "Tending": 0.25,
+  "Thinking": 0.25,
+  "celebrating": 0.25,
+  "raising": 0,
+  "something": 0,
+  "working": 0.275,
+  "watching": 0.25,
+  "enjoying": 0.475,
+  "chatting": 0.25,
+  "applying": 0.375,
+  "morning": 0,
+  "painting": 0,
+  "washing": 0,
+  "exhausting": 0.25,
+  "demanding": -0.292,
+  "running": 0,
+  "finding": 0,
+  "goin": 0,
+  "holding": 0,
+  "coping": 0,
+  "understanding": 0.25,
+  "including": 0,
+  "talking": 0.25,
+  "expecting": 0.25,
+  "eating": 0,
+  "cooking": 0,
+  "locating": 0.25,
+  "learning": 0.542,
+  "boiling": 0.25,
+  "getting": 0.375,
+  "standing": 0,
+  "starting": 0,
+  "spring": 0,
+  "taking": 1,
+  "managing": 0.25,
+  "noticing": 0.25,
+  "picking": 0,
+  "sitting": -0.25,
+  "driving": 0.438,
+  "writing": 0,
+  "shining": 0.25,
+  "programming": 0,
+  "following": 0,
+  "everything": 0,
+  "knowing": 0.438,
+  "remembering": 0,
+  "relishing": -0.375,
+  "feeling": 0,
+  "jumping": 0,
+  "hopping": -0.25,
+  "pretending": -0.25,
+  "putting": 0.375,
+  "singing": 0.625,
+  "dancing": 0,
+  "changing": -0.25,
+  "making": 0,
+  "having": 0,
+  "communicating": 0,
+  "using": 0.25,
+  "shouting": -0.5,
+  "smiling": 0.375,
+  "swirling": 0,
+  "Wondering": 0.25,
+  "doing": 0,
+  "thing": 0,
+  "being": 0.5,
+  "guiding": 0.438,
+  "clothing": -0.25,
+  "parenting": 0.25
+};
+
+
+
+"use strict";
+let color = 'white'
+let numKeys = Object.keys(vbgWords).length;
+const margin = .617;
+let verbKeys = Object.keys(vbgWords);
+let verbValues = Object.values(vbgWords);
+
+
+
+// SETUP
+function setup() {
+    createCanvas(windowWidth, windowHeight);
+    noLoop();
+    // stroke('white');
+    // strokeWeight(.5);
+
+  } // END SETUP
+
+
+// DRAW
+function draw() {
+    background("black");
+    
+      for (let i=0; i<numKeys; i++) {
+        text(verbKeys[i], random, random);
+      }
+      
+    
+      // append the new paragraph to the poster div
+      document.getElementById("canvas");
+  } // END DRAW
+
+ 
+
+  function drawLine() {
+    // const range = map(lineY, margin * 2, height - margin * 2, 0, 50);
+  
+    // let prevX = margin * 2;
+    // let prevY = lineY;
+    // const lineSpacing = 10;
+  
+    // for (let x = prevX + lineSpacing; x <= width - margin * 2; x += lineSpacing) {
+  
+    //   // const y = lineY + random(-range, range);
+    //   const y = lineY + random(-range, range);
+    //   line(numKeys, prevY, x, y);
+  
+    //   prevX = x;
+    //   prevY = y;
+    // }
+
+  }
+
+
+
+
+
+// // NODE to HTML Test
 window.onload = function () {
  
       $.get(
         "/data", // Specific route
         function (response) {
-            // console.log(response);
+            console.log(response);
            
-            $(element).perpend('<div> hello</div>');
+            // $(element).perpend('<div> hello</div>');
 
 
             for (let key of Object.keys(response)) {
-              console.log(key); 
+              // console.log(key); 
              
              
             }
@@ -22,77 +720,3 @@ window.onload = function () {
     }; //END click
 
 
-
-
-
-
-// $(document).ready(draw);
-// "use strict";
-
-
-// let state = "start"; // can be start and simulation
-// let color = 'black'
-
-// // SETUP
-// function setup() {
-//     createCanvas(windowWidth, windowHeight);
-//   } // END SETUP
-
-// // DRAW
-// function draw() {
-//     // background("black");
-  
-//     if (state === "start") {
-//       start();
-//     }
-
-//   } // END DRAW
-
-// function start() {
-//     // for(let i = 0; i<=windowWidth; i+=(windowWidth / 20)){
-//     line(1, windowHeight, windowWidth/2, 0)
-//             // windowWidth = windowWidth - 0.5;
-//             // if (windowWidth < 0) {
-//             //   windowWidth = height;
-//             // }
-//             stroke(color);
-//         }
-// // }
-
-// function windowResized() {
-//   resizeCanvas(windowWidth, windowHeight);
-// }
-
-
-// let color = 'white'
-
-
-// function draw() {
-// //   background(0);
-  
-//     // for(let i = 0; i<=windowWidth; i+=(windowWidth / 20)){
-//         line(i, windowHeight, 0, 0)
-//         windowWidth = windowWidth - 0.5;
-//         if (windowWidth < 0) {
-//           windowWidth = height;
-//         }
-//         stroke(color);
-//     // }
-  
-//     //   for(let i = 0; i<=windowWidth; i+=(windowWidth / 20)){
-//     //         line(i, windowHeight, windowWidth, 0)
-//     //     stroke(color);
-//     // }
-  
-//     //     for(let i = 0; i<=windowWidth; i+=(windowWidth / 20)){
-//     //     line(i, windowHeight, windowWidth / 2, 0)
-//     //     stroke(color);
-//     // }
-  
-//  // append the new paragraph to the poster div
-//  document.getElementById("canvas");
-// }
-
-// function windowResized() {
-//   resizeCanvas(windowWidth, windowHeight);
-// }
