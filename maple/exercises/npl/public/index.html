@@ -1,3 +1,14 @@
+<!--- 
+----------------------------------------------------------------------------------------------------------------
+    CART 451: EXERCISE II
+    Using VBG(Verb Gerund Present Participles) with Natural (NPL Progam) to determine their sentiment value and 
+    display the results from data (Book: Raising Happy Children for Dummies). 
+
+    References:
+    Pop-up Code: Sham Kaja (https://codepen.io/shamk04/pen/RMExex)
+----------------------------------------------------------------------------------------------------------------
+--> 
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -19,7 +30,16 @@
 
   <div id="canvas"></div>
 
+  <div class="popup-link">
+    <a href="#popup1">info</a>
+    </div>
 
+    <div id="popup1" class="popup-container">
+      <div class="popup-content">
+        <a href="#" class="close">&times;</a>
+        <p>Reading "Raising Happy Children for Dummies" using Natural(language processing program). The entire text was tokenized and only the verb present participle(VBG) were islolted. Each word is placed on the X-axis by it's frequency in the text, then it's font size mapped by Natural's sentiment value. (Notes: the sentiment value was multiplied by 1000 for coherency.) The 'For Dummies' books are established as instructional or reference guides. Therefore it seemed fitting that I chose to isolate the verb present participle (text that end in 'ing'). </p>
+      </div>
+    </div>
 </body>
 
 </html>
